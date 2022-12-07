@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using SistemaDeFavoritos.Data;
+using SistemaDeFavoritos.Repositorios;
+using SistemaDeFavoritos.Repositorios.Interfaces;
+
 namespace SistemaDeFavoritos
 {
     public class Program
@@ -12,6 +17,14 @@ namespace SistemaDeFavoritos
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddEntityFrameworkSqlServer()
+                .AddDbContext<SistemaDeFavoritosDBContext>(
+                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+                );
+
+            builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+
 
             var app = builder.Build();
 
